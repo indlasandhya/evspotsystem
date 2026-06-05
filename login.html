@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login | EV Spot System</title>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+body {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container { width: 100%; max-width: 420px; }
+
+.login-box {
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.input-group input:focus {
+  border-color: #0072ff;
+  outline: none;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #0072ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #005fcc;
+}
+
+.register-text {
+  text-align: center;
+  margin-top: 15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="login-container">
+  <div class="login-box">
+    <h2>EV Spot Login</h2>
+
+    <!-- ✅ FORM FIXED -->
+    <form action="login.php" method="POST" id="loginForm">
+
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="pwd" name="pwd" required>
+      </div>
+
+      <button type="submit" class="btn">Login</button>
+
+    </form>
+
+    <div class="register-text">
+      Don't have account? <a href="registration.html">Register</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ❌ REMOVE THIS JS (backend already handles login) -->
+<!--
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(e){
+  e.preventDefault();
+});
+</script>
+-->
+
+</body>
+</html>

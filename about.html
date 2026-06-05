@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EV Spot System - About Us</title>
+<style>
+body { margin: 0; font-family: 'Segoe UI', sans-serif; color: #222; background: #f8faff; }
+
+/* Navbar */
+header { display: flex; justify-content: space-between; align-items: center; padding: 12px 8%; background: #203859; color: white; position: sticky; top: 0; z-index: 20; }
+.logo { font-size: 2rem; font-weight: bold; letter-spacing: 1px; }
+nav { display: flex; align-items: center; flex-wrap: wrap; position: relative; }
+nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.2s; font-size: 1.1rem; }
+nav a:hover { color: #49e86f; }
+
+/* User Email Badge - reduced size */
+.user-email {
+  margin-left: 20px;
+  font-weight: 600;
+  color: #fff;
+  font-size: 1rem; /* reduced from 1.2rem */
+  background: #49e86f;
+  padding: 6px 14px; /* slightly smaller padding */
+  border-radius: 25px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+/* Dropdown & menu bar */
+.menu-bar { position: relative; margin-left: 20px; cursor: pointer; }
+.menu-bar span { display: block; height: 3px; width: 22px; background: #fff; margin: 4px 0; border-radius: 5px; }
+.dropdown { display: none; position: absolute; right: 0; top: 35px; background: #203859; box-shadow: 0 3px 8px rgba(0,0,0,0.3); border-radius: 6px; overflow: hidden; min-width: 180px; z-index: 30; }
+.dropdown a { display: block; padding: 12px 15px; text-decoration: none; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 1rem; }
+.dropdown a:hover { background: #49e86f; color: #203859; }
+
+.menu-toggle { display: none; flex-direction: column; cursor: pointer; }
+.menu-toggle span { height: 3px; width: 25px; background: #fff; margin: 4px 0; border-radius: 5px; }
+
+.sidebar { position: fixed; top: 0; right: -260px; width: 260px; height: 100%; background: #203859; box-shadow: -2px 0 10px rgba(0,0,0,0.3); display: flex; flex-direction: column; padding-top: 70px; transition: right 0.3s ease; z-index: 25; }
+.sidebar a { padding: 15px 20px; color: #fff; text-decoration: none; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar a:hover { background: #49e86f; color: #203859; }
+
+.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 15; }
+
+/* About Section */
+.about-section { max-width: 900px; margin: 50px auto; padding: 40px 20px; background-color: #fff; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center; }
+.about-section h1 { font-size: 2.5rem; color: #0d47a1; margin-bottom: 20px; }
+.about-section p { font-size: 1.1rem; color: #333; line-height: 1.6; margin-bottom: 15px; text-align: justify; }
+.about-section img { max-width: 100%; border-radius: 12px; margin-top: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+@media (max-width: 768px) { nav { display: none; } .menu-toggle { display: flex; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⚡ EV Spot System</div>
+  <nav>
+   <a href="main.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About Us</a>
+    <a href="contactus.html">Contact Us</a>
+
+    <span class="user-email" id="user-email"></span>
+
+    <div class="menu-bar" onclick="toggleDropdown()">
+      <span></span><span></span><span></span>
+      <div class="dropdown" id="dropdown">
+        <a href="user.html">👤 User</a>
+        <a href="logout.html" onclick="logout()">🚪 Logout</a>
+      </div>
+    </div>
+  </nav>
+  <div class="menu-toggle" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+</header>
+<div class="sidebar" id="sidebar">
+  <a href="main.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="about.html">About Us</a>
+  <a href="contactus.html">Contact Us</a>
+  <a href="user.html">👤 User</a>
+  <a href="logout.html" onclick="logout()">🚪 Logout</a>
+</div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<section class="about-section">
+  <h1>About Us</h1>
+  <p>
+    EV Spot System is your one-stop solution for finding electric vehicle charging stations quickly and efficiently. 
+    We provide a user-friendly platform to locate nearby charging points, check real-time availability, and reserve slots seamlessly.
+  </p>
+  <p>
+    Our system supports all types of EVs and offers fast-charging options to minimize wait times. 
+    We aim to promote eco-friendly transportation while ensuring convenience for EV owners.
+  </p>
+  <img src="img2.jpg" alt="EV Charging Station">
+</section>
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  if (sidebar.style.right === "0px") { sidebar.style.right = "-260px"; overlay.style.display = "none"; }
+  else { sidebar.style.right = "0px"; overlay.style.display = "block"; }
+}
+
+function toggleDropdown() {
+  const dropdown = document.getElementById("dropdown");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
+window.addEventListener("click", function(e) {
+  const menuBar = document.querySelector(".menu-bar");
+  const dropdown = document.getElementById("dropdown");
+  if (!menuBar.contains(e.target)) { dropdown.style.display = "none"; }
+});
+
+// Display logged-in email exactly like main.html
+document.addEventListener("DOMContentLoaded", () => {
+  const email = localStorage.getItem("userEmail"); // store user email on login
+  document.getElementById("user-email").innerHTML = email ? `👤 Welcome ${email}` : `👤 Welcome Guest`;
+});
+</script>
+
+</body>
+</html>

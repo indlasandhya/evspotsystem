@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Find a Spot | EVSpot System</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+<style>
+body { margin:0; font-family:'Segoe UI', sans-serif; background: linear-gradient(135deg,#e0f7fa,#e1f5fe); color:#333; }
+header { background: linear-gradient(90deg,#0a9396,#005f73); color:white; padding:20px; font-size:1.8rem; font-weight:bold; letter-spacing:1px; box-shadow:0 4px 12px rgba(0,0,0,0.2); display:flex; justify-content:space-between; align-items:center; }
+header a { text-decoration:none; color:white; font-size:1.5rem; }
+.container { max-width:1200px; margin:30px auto; background:#ffffffdd; padding:30px; border-radius:16px; box-shadow:0px 8px 20px rgba(0,0,0,0.15); backdrop-filter: blur(6px); }
+h2 { margin-bottom:20px; color:#005f73; font-weight:600; }
+.search-bar { display:flex; gap:10px; margin-bottom:25px; }
+.search-bar input, .search-bar select { flex:1; padding:12px; border:none; border-radius:10px; background:#f0f4f8; box-shadow: inset 2px 2px 6px rgba(0,0,0,0.1), inset -2px -2px 6px #fff; }
+.search-bar button { padding:12px 24px; background:#0a9396; color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer; transition:0.3s; }
+.search-bar button:hover { background:#007f83; transform:scale(1.05); }
+.layout { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.spots { display:flex; flex-direction:column; gap:18px; max-height:500px; overflow-y:auto; padding-right:10px; }
+.spot-card { background:#f9fbfc; padding:20px; border-radius:14px; box-shadow:4px 4px 10px rgba(0,0,0,0.1), -4px -4px 10px #fff; transition:0.3s; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+.spot-card:hover { transform:translateY(-5px); box-shadow:6px 6px 15px rgba(0,0,0,0.15), -6px -6px 15px #fff; }
+.spot-card h3 { color:#005f73; margin-bottom:10px; }
+.spot-card p { margin-bottom:6px; font-size:0.95rem; }
+.spot-card-buttons { display:flex; flex-direction:column; gap:8px; }
+#map { width:100%; height:500px; border-radius:14px; box-shadow:0px 6px 16px rgba(0,0,0,0.2); }
+.distance-info { font-weight:bold; color:#0a9396; margin-top:5px; }
+.book-btn { background:#0a9396; color:white; padding:10px 18px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; }
+.book-btn:hover { background:#007f83; }
+.wait-btn { background:#ae2e20; color:white; padding:10px 18px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; }
+.wait-btn:hover { background:#c0392b; }
+</style>
+</head>
+<body>
+<header>
+  ⚡ EVSpot System - Find a Spot
+  <span style="display:flex; align-items:center; gap:10px;">
+    <a href="main.html">🏠</a>
+    <span id="userEmail" style="font-weight:600;">user@example.com</span>
+  </span>
+</header>
+
+<div class="container">
+  <h2>🔍 Search for Charging Spots</h2>
+  <div class="search-bar">
+    <input type="text" id="locationInput" placeholder="Enter location..." />
+    <select id="statusFilter">
+      <option value="All">All</option>
+      <option value="Available">Available</option>
+      <option value="Occupied">Occupied</option>
+    </select>
+    <button onclick="filterSpots()">Search</button>
+  </div>
+  <div class="layout">
+    <div class="spots" id="spotList"></div>
+    <div id="map"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+<script>
+// Display logged-in email
+let loggedInEmail = localStorage.getItem("userEmail") || "user@example.com";
+document.getElementById("userEmail").textContent = loggedInEmail;
+
+let map = L.map("map").setView([17.385044,78.486671],11);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{ attribution:"&copy; OpenStreetMap contributors" }).addTo(map);
+
+let markers = [], routingControls = [], userMarker = null;
+
+// Spots Data
+let spots = [
+  { id:1, name:"Warangal City Center", city:"Warangal", lat:17.9785, lng:79.5890, status:"Available", type:"Fast Charger", rate:30 },
+  { id:2, name:"Warangal Bus Station", city:"Warangal", lat:17.9740, lng:79.5935, status:"Occupied", type:"Standard Charger", rate:20 },
+  { id:3, name:"Hanumakonda Market Hub", city:"Hanumakonda", lat:17.9960, lng:79.5850, status:"Available", type:"Ultra-Fast Charger", rate:40 },
+  { id:4, name:"Hanumakonda Temple Road", city:"Hanumakonda", lat:17.9930, lng:79.5910, status:"Occupied", type:"Fast Charger", rate:30 },
+  { id:5, name:"Hanumakonda Railway Station", city:"Hanumakonda", lat:17.9905, lng:79.5875, status:"Available", type:"Standard Charger", rate:20 },
+  { id:6, name:"Ameerpet Crossroads", city:"Hyderabad", lat:17.4391, lng:78.4483, status:"Occupied", type:"Fast Charger", rate:30 },
+  { id:7, name:"Miyapur Metro Station", city:"Hyderabad", lat:17.4935, lng:78.3768, status:"Available", type:"Standard Charger", rate:20 },
+  { id:8, name:"Nagole Terminal", city:"Hyderabad", lat:17.3984, lng:78.5679, status:"Available", type:"Ultra-Fast Charger", rate:40 },
+  { id:9, name:"Paradise Junction", city:"Hyderabad", lat:17.3986, lng:78.4828, status:"Occupied", type:"Standard Charger", rate:20 },
+  { id:10, name:"Jubilee Hills Checkpost", city:"Hyderabad", lat:17.4199, lng:78.4024, status:"Available", type:"Fast Charger", rate:30 },
+  { id:11, name:"Habsiguda Circle", city:"Hyderabad", lat:17.4092, lng:78.5407, status:"Available", type:"Standard Charger", rate:20 },
+  { id:12, name:"Nalgonda Main Square", city:"Nalgonda", lat:17.0565, lng:79.2670, status:"Available", type:"Fast Charger", rate:30 },
+  { id:13, name:"Suryapet Bus Stop", city:"Suryapet", lat:17.1315, lng:79.6225, status:"Occupied", type:"Standard Charger", rate:20 },
+  { id:14, name:"Khammam City Hub", city:"Khammam", lat:17.2473, lng:80.1514, status:"Available", type:"Ultra-Fast Charger", rate:40 },
+  { id:15, name:"Mahabubnagar Circle", city:"Mahabubnagar", lat:16.7425, lng:78.0014, status:"Available", type:"Fast Charger", rate:30 },
+  { id:16, name:"Nizamabad Junction", city:"Nizamabad", lat:18.6731, lng:78.0943, status:"Occupied", type:"Standard Charger", rate:20 },
+  { id:17, name:"Hitech City Station", city:"Hyderabad", lat:17.443464, lng:78.377229, status:"Available", type:"Fast Charger", rate:30 },
+  { id:18, name:"Secunderabad Junction", city:"Hyderabad", lat:17.439929, lng:78.498274, status:"Occupied", type:"Standard Charger", rate:20 },
+  { id:19, name:"Banjara Hills Plaza", city:"Hyderabad", lat:17.412348, lng:78.441207, status:"Available", type:"Ultra-Fast Charger", rate:40 },
+  { id:20, name:"Charminar Spot", city:"Hyderabad", lat:17.361563, lng:78.474665, status:"Available", type:"Standard Charger", rate:20 },
+  { id:21, name:"Gachibowli Hub", city:"Hyderabad", lat:17.443243, lng:78.348930, status:"Occupied", type:"Fast Charger", rate:30 },
+  { id:22, name:"Kukatpally Center", city:"Hyderabad", lat:17.493271, lng:78.391547, status:"Available", type:"Standard Charger", rate:20 },
+  { id:23, name:"LB Nagar Station", city:"Hyderabad", lat:17.352446, lng:78.557849, status:"Available", type:"Ultra-Fast Charger", rate:40 },
+  { id:24, name:"Madhapur Square", city:"Hyderabad", lat:17.448294, lng:78.391487, status:"Occupied", type:"Standard Charger", rate:20 },
+  { id:25, name:"Begumpet Road", city:"Hyderabad", lat:17.437462, lng:78.448288, status:"Available", type:"Fast Charger", rate:30 },
+  { id:26, name:"Mehdipatnam Circle", city:"Hyderabad", lat:17.396602, lng:78.442217, status:"Available", type:"Standard Charger", rate:20 },
+  { id:27, name:"Suryapet Plaza", city:"Suryapet", lat:17.1320, lng:79.6225, status:"Occupied", type:"Standard Charger", rate:20 },
+  { id:28, name:"Ramagundam Terminal", city:"Ramagundam", lat:18.7463, lng:79.5766, status:"Available", type:"Ultra-Fast Charger", rate:40 },
+  { id:29, name:"Medak Center", city:"Medak", lat:17.9259, lng:78.2721, status:"Available", type:"Fast Charger", rate:30 },
+  { id:30, name:"Adilabad Junction", city:"Adilabad", lat:19.6673, lng:78.5314, status:"Occupied", type:"Standard Charger", rate:20 }
+];
+
+// Utils
+function formatTime(seconds){
+  let m=Math.floor(seconds/60);
+  let s=seconds%60;
+  return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+}
+
+function getDistance(lat1,lon1,lat2,lon2){
+  let R=6371;
+  let dLat=(lat2-lat1)*Math.PI/180;
+  let dLon=(lon2-lon1)*Math.PI/180;
+  let a=Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function renderSpots(filteredSpots,userLat=null,userLon=null){
+  const spotList = document.getElementById("spotList");
+  spotList.innerHTML="";
+  markers.forEach(m=>map.removeLayer(m));
+  markers=[];
+
+  filteredSpots.forEach(spot=>{
+    if(!spot.timeRemaining){
+      spot.timeRemaining = spot.status==="Available"
+        ? Math.floor(Math.random()*30+10)*60
+        : Math.floor(Math.random()*20+5)*60;
+    }
+
+    let card = document.createElement("div");
+    card.className="spot-card";
+    card.setAttribute("data-id",spot.id);
+
+    // Initial button
+    const btnContainer = document.createElement('div');
+    btnContainer.className="spot-card-buttons";
+    let btnLink = document.createElement('a');
+    btnLink.href = spot.status==="Available" ? `confirm.php?stationId=${spot.id}` : `waitlist.php?stationId=${spot.id}`;
+    btnLink.innerHTML = `<button class="${spot.status==="Available" ? "book-btn":"wait-btn"}">${spot.status==="Available" ? "Book Now":"Join Waitlist"}</button>`;
+    btnContainer.appendChild(btnLink);
+
+    card.innerHTML=`
+      <div>
+        <h3>${spot.name}</h3>
+        <p><b>Location:</b> ${spot.city}</p>
+        <p><b>Status:</b> ${spot.status}</p>
+        <p><b>Type:</b> ${spot.type}</p>
+        <p><b>Rate:</b> ₹${spot.rate}/hr</p>
+        <p class="distance-info">${userLat? "Distance: "+getDistance(userLat,userLon,spot.lat,spot.lng).toFixed(2)+" km":""}</p>
+        <p class="time-info"><b>${spot.status==="Available"?"Available Time":"Waiting Time"}:</b> ${formatTime(spot.timeRemaining)}</p>
+      </div>
+    `;
+    card.appendChild(btnContainer);
+
+    // Countdown + automatic status switch
+    setInterval(()=>{
+      if(spot.timeRemaining>0){
+        spot.timeRemaining--;
+        card.querySelector('.time-info').innerHTML=`<b>${spot.status==="Available"?"Available Time":"Waiting Time"}:</b> ${formatTime(spot.timeRemaining)}`;
+      } else {
+        if(spot.status==="Available"){
+          spot.status="Occupied";
+          btnContainer.innerHTML='';
+          let waitBtn = document.createElement('a');
+          waitBtn.href = `waitlist.php?stationId=${spot.id}`;
+          waitBtn.innerHTML = '<button class="wait-btn">Join Waitlist</button>';
+          btnContainer.appendChild(waitBtn);
+          let newIcon=L.icon({iconUrl:"https://maps.google.com/mapfiles/ms/icons/red-dot.png", iconSize:[25,41], iconAnchor:[12,41]});
+          markers.find(m=>m.getLatLng().lat===spot.lat && m.getLatLng().lng===spot.lng).setIcon(newIcon);
+          spot.timeRemaining=Math.floor(Math.random()*20+5)*60;
+        } else {
+          spot.status="Available";
+          btnContainer.innerHTML='';
+          let bookBtn = document.createElement('a');
+          bookBtn.href = `confirm.php?stationId=${spot.id}`;
+          bookBtn.innerHTML = '<button class="book-btn">Book Now</button>';
+          btnContainer.appendChild(bookBtn);
+          let newIcon=L.icon({iconUrl:"https://maps.google.com/mapfiles/ms/icons/green-dot.png", iconSize:[25,41], iconAnchor:[12,41]});
+          markers.find(m=>m.getLatLng().lat===spot.lat && m.getLatLng().lng===spot.lng).setIcon(newIcon);
+          spot.timeRemaining=Math.floor(Math.random()*30+10)*60;
+        }
+      }
+    },1000);
+
+    card.addEventListener("click",()=>{
+      map.setView([spot.lat,spot.lng],14);
+      if(userLat && userLon){
+        routingControls.forEach(rc=>map.removeControl(rc));
+        routingControls=[];
+        let rc = L.Routing.control({
+          waypoints:[L.latLng(userLat,userLon),L.latLng(spot.lat,spot.lng)],
+          lineOptions:{styles:[{color:'blue',weight:4,opacity:0.7}]},
+          addWaypoints:false,
+          draggableWaypoints:false,
+          routeWhileDragging:false,
+          show:false
+        }).on('routesfound',e=>{
+          let distanceKm=(e.routes[0].summary.totalDistance/1000).toFixed(2);
+          card.querySelector('.distance-info').textContent=`Distance: ${distanceKm} km`;
+        }).addTo(map);
+        routingControls.push(rc);
+      }
+    });
+
+    spotList.appendChild(card);
+
+    let icon = L.icon({
+      iconUrl: spot.status==="Available"?"https://maps.google.com/mapfiles/ms/icons/green-dot.png":"https://maps.google.com/mapfiles/ms/icons/red-dot.png",
+      iconSize:[25,41], iconAnchor:[12,41]
+    });
+    let marker = L.marker([spot.lat,spot.lng],{icon}).addTo(map)
+      .bindPopup(`<h3>${spot.name}</h3><p><b>Status:</b> ${spot.status}</p><p><b>Type:</b> ${spot.type}</p><p><b>Rate:</b> ₹${spot.rate}/hr</p><p><b>${spot.status==="Available"?"Time":"Waiting Time"}:</b> ${formatTime(spot.timeRemaining)}</p>`);
+    markers.push(marker);
+  });
+}
+
+function filterSpots(){
+  let locationInput=document.getElementById("locationInput").value;
+  let statusFilter=document.getElementById("statusFilter").value;
+  routingControls.forEach(rc=>map.removeControl(rc));
+  routingControls=[];
+
+  if(!locationInput){ renderSpots(spots); return; }
+
+  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${locationInput}`)
+  .then(res=>res.json())
+  .then(data=>{
+    if(data.length===0){ alert("❌ Location not found!"); return; }
+    let userLat=parseFloat(data[0].lat), userLon=parseFloat(data[0].lon);
+    map.setView([userLat,userLon],12);
+    if(userMarker) map.removeLayer(userMarker);
+    let carIcon = L.icon({
+      iconUrl:"https://cdn-icons-png.flaticon.com/512/743/743922.png",
+      iconSize:[35,35], iconAnchor:[17,35], popupAnchor:[0,-30]
+    });
+    userMarker=L.marker([userLat,userLon],{icon:carIcon}).addTo(map).bindPopup("<b>🚗 Your Location</b>").openPopup();
+
+    let filtered = spots.filter(s=>statusFilter==="All"||s.status===statusFilter)
+                        .map(s=>({...s,distance:getDistance(userLat,userLon,s.lat,s.lng)}))
+                        .sort((a,b)=>a.distance-b.distance);
+    renderSpots(filtered,userLat,userLon);
+  });
+}
+
+document.getElementById("statusFilter").addEventListener("change", filterSpots);
+renderSpots(spots);
+</script>
+</body>
+</html>

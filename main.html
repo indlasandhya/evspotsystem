@@ -1,0 +1,275 @@
+<DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EV Spot System - Home</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: #222;
+  background: #f8faff;
+}
+
+/* Navbar */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 8%;
+  background: #203859;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.logo { font-size: 2rem; font-weight: bold; letter-spacing: 1px; }
+nav { display: flex; align-items: center; flex-wrap: wrap; position: relative; }
+nav a { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; transition: color 0.2s; font-size: 1.1rem; }
+nav a:hover { color: #49e86f; }
+
+/* User Email Badge */
+.user-email {
+  margin-left: 20px;
+  font-weight: 600;
+  color: #fff;
+  font-size: 1rem; /* reduced from 1.2rem */
+  background: #49e86f;
+  padding: 6px 14px; /* slightly smaller padding */
+  border-radius: 25px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.user-email a { color: #ffeb3b; text-decoration: none; font-weight: 500; }
+
+/* Dropdown & menu bar */
+.menu-bar { position: relative; margin-left: 20px; cursor: pointer; }
+.menu-bar span { display: block; height: 3px; width: 22px; background: #fff; margin: 4px 0; border-radius: 5px; }
+.dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 35px;
+  background: #203859;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  border-radius: 6px;
+  overflow: hidden;
+  min-width: 180px;
+  z-index: 30;
+}
+.dropdown a {
+  display: block;
+  padding: 12px 15px;
+  text-decoration: none;
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 1rem;
+}
+.dropdown a:hover { background: #49e86f; color: #203859; }
+
+.menu-toggle { display: none; flex-direction: column; cursor: pointer; }
+.menu-toggle span { height: 3px; width: 25px; background: #fff; margin: 4px 0; border-radius: 5px; }
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -260px;
+  width: 260px;
+  height: 100%;
+  background: #203859;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  padding-top: 70px;
+  transition: right 0.3s ease;
+  z-index: 25;
+}
+.sidebar a {
+  padding: 15px 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.sidebar a:hover { background: #49e86f; color: #203859; }
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 15;
+}
+
+/* Hero */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 8%;
+  min-height: 60vh;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.hero-text { flex: 1; min-width: 280px; }
+.hero-text h1 { font-size: 2.5rem; margin-bottom: 15px; color: #203859; }
+.hero-text p { font-size: 1.1rem; line-height: 1.6; color: #444; }
+.hero-image { flex: 1.2; display: flex; justify-content: center; min-width: 280px; }
+.hero-image img { width: 90%; max-width: 600px; border-radius: 15px; }
+
+/* Features Section */
+.features {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: nowrap;
+  padding: 30px 8%;
+  background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+  overflow: hidden;
+}
+.feature {
+  flex: 1;
+  min-width: 180px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+.feature:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.25); }
+.feature .top-bar { height: 8px; width: 100%; background: linear-gradient(90deg, #0d47a1, #60dd7d); }
+.feature h3 { margin: 10px 0; font-size: 1.3rem; color: #0d47a1; }
+.feature p { font-size: 1rem; color: #555; padding: 0 15px 20px 15px; line-height: 1.5; }
+
+/* Button */
+.btn {
+  background: #49e86f;
+  color: #203859;
+  padding: 14px 28px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn:hover { background: #203859; color: #fff; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav { display: none; }
+  .menu-toggle { display: flex; }
+  .features { flex-wrap: wrap; justify-content: center; }
+  .feature { max-width: 220px; margin-bottom: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⚡ EV Spot System</div>
+  <nav>
+    <a href="main.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About Us</a>
+    <a href="contactus.html">Contact Us</a>
+
+    <!-- User Email Badge -->
+    <span class="user-email" id="user-email"></span>
+
+    <div class="menu-bar" onclick="toggleDropdown()">
+      <span></span><span></span><span></span>
+      <div class="dropdown" id="dropdown">
+         <a href="user.html">👤 User</a>
+         <a href="logout.html" onclick="logout()">🚪 Logout</a>
+      </div>
+    </div>
+  </nav>
+  <div class="menu-toggle" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+</header>
+
+<div class="sidebar" id="sidebar">
+  <a href="main.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="about.html">About Us</a>
+  <a href="contactus.html">Contact Us</a>
+  <a href="user.html">👤 User</a>
+  <a href="logout.html" onclick="logout()">🚪 Logout</a>
+</div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Welcome to EV Spot System</h1>
+    <p>
+      Welcome to <b>EV Spot System</b> your one-stop platform to locate 
+      nearby charging stations, check availability, and book a slot instantly.  
+      Drive smart, charge smarter, and be part of the green revolution.
+    </p>
+    <a href="find.html" class="btn">🔍 Find a Spot</a>
+  </div>
+  <div class="hero-image">
+    <img src="img1.webp" alt="EV Charging Station">
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features">
+  <div class="feature"><div class="top-bar"></div><h3>Nearby Stations</h3><p>Find EV charging spots closest to your location instantly.</p></div>
+  <div class="feature"><div class="top-bar"></div><h3>Easy Booking</h3><p>Reserve your charging slot in advance and save time.</p></div>
+  <div class="feature"><div class="top-bar"></div><h3>Secure Payments</h3><p>Pay easily using UPI, cards, or wallets with invoice support.</p></div>
+  <div class="feature"><div class="top-bar"></div><h3>Fast Charging</h3><p>Access stations with ultra-fast chargers to power up your EV in minutes.</p></div>
+  <div class="feature"><div class="top-bar"></div><h3>Reviews</h3><p>Check real customer reviews and rate your experience.</p></div>
+</section>
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  if (sidebar.style.right === "0px") { sidebar.style.right = "-260px"; overlay.style.display = "none"; }
+  else { sidebar.style.right = "0px"; overlay.style.display = "block"; }
+}
+
+function toggleDropdown() {
+  const dropdown = document.getElementById("dropdown");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
+window.addEventListener("click", function(e) {
+  const menuBar = document.querySelector(".menu-bar");
+  const dropdown = document.getElementById("dropdown");
+  if (!menuBar.contains(e.target)) { dropdown.style.display = "none"; }
+});
+
+// ✅ Display logged-in email with Welcome badge
+document.addEventListener("DOMContentLoaded", () => {
+  const email = localStorage.getItem("userEmail");
+
+  // Redirect to login if not logged in
+  if(!email){
+    window.location.href = "login.html";
+    return;
+  }
+
+  const userEmail = document.getElementById("user-email");
+  userEmail.innerHTML = `👤 Welcome ${email}`;
+});
+
+// ✅ Logout function
+function logout() {
+  localStorage.removeItem("userEmail"); // clear email
+  window.location.href = "login.html";  // redirect to login
+}
+</script>
+</body>
+</html>
