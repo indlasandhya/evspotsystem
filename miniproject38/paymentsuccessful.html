@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Successful - EV Spot System</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .success-box {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      max-width: 500px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .checkmark {
+      font-size: 80px;
+      color: #28a745;
+      margin-bottom: 20px;
+      animation: pop 0.5s ease-in-out;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #0f3057;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 40px;
+      border: none;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    .btn:hover {
+      background: linear-gradient(135deg, #0072ff, #00c6ff);
+      transform: scale(1.05);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="success-box">
+    <div class="checkmark">✅</div>
+    <h1>Payment Successful!</h1>
+    <p>Thank you for booking with <strong>EV Spot System</strong>.<br>
+    Your charging station has been reserved successfully.</p>
+    <a href="user.html" class="btn">Go to Dashboard</a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Cancellation</title>
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f0f4f8;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 500px;
+}
+h2 {
+    color: #cc0000;
+    margin-bottom: 15px;
+}
+p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+button.go-back {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #007acc;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+button.go-back:hover {
+    background-color: #005b99;
+    transform: scale(1.05);
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>❌ Booking Cancelled</h2>
+    <p>Your booking has been successfully cancelled.</p>
+    <button class="go-back" onclick="window.location.href='main.html'">⬅ Go Back</button>
+</div>
+
+</body>
+</html>

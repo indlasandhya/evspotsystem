@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EV Spot System</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif; }
+body { background:#f5f7fa; color:#333; overflow:hidden; }
+
+/* Navbar */
+nav {
+  display:flex; justify-content: space-between; align-items:center;
+  padding:20px 60px; background:#fff;
+  box-shadow:0 2px 10px rgba(0,0,0,0.15); position:relative; z-index:100;
+}
+nav .logo { font-weight:800; font-size:2rem; color:#4facfe; }
+nav .nav-buttons a {
+  margin-left:15px; padding:12px 30px; border-radius:8px; font-weight:600; transition:0.3s;
+  border:none; text-decoration:none; color:#fff;
+}
+nav .nav-buttons a.login { background:#4facfe; }
+nav .nav-buttons a.login:hover { background:#00c6ff; }
+nav .nav-buttons a.register { background:#00c6ff; }
+nav .nav-buttons a.register:hover { background:#4facfe; }
+
+/* Full-page container */
+.container {
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  justify-content:space-between;
+}
+
+/* Hero Section */
+.hero {
+  flex:2;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; background: linear-gradient(135deg,#4facfe,#00c6ff);
+  color:#fff; position:relative; overflow:hidden;
+}
+.hero h1 {
+  font-size:3rem; font-weight:800; margin-bottom:20px;
+  text-shadow:2px 2px 12px rgba(0,0,0,0.2);
+}
+.hero p { font-size:1.3rem; max-width:700px; margin-bottom:30px; }
+.hero .hero-buttons a {
+  padding:16px 50px; border-radius:50px; font-weight:700;
+  transition:0.3s; color:#fff; text-decoration:none;
+  background: linear-gradient(90deg, #5706d1, #9b0ffb);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+.hero .hero-buttons a:hover { background: linear-gradient(90deg, #7a1fff, #d44eff); transform: translateY(-2px); }
+
+/* Floating blobs */
+.blob {
+  position:absolute; border-radius:50%; opacity:0.3; filter:blur(80px);
+}
+.blob1 { width:350px; height:350px; background:#ff6b6b; top:-70px; left:-70px; }
+.blob2 { width:450px; height:450px; background:#6bc1ff; bottom:-100px; right:-100px; }
+
+/* Features Section */
+.features-section {
+  flex:1;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:#f8f9fa; text-align:center; padding:0 20px;
+}
+.features-section h2 {
+  font-size:2rem; margin-bottom:20px; color:#333;
+}
+.features {
+  display:flex; justify-content:center; gap:30px;
+}
+.feature-card {
+  background:#fff; border-radius:18px; padding:20px; max-width:220px;
+  text-align:center; box-shadow:0 8px 25px rgba(0,0,0,0.15); transition:0.4s;
+}
+.feature-card:hover { transform:translateY(-5px) scale(1.03); box-shadow:0 15px 35px rgba(0,0,0,0.25);}
+.feature-card i { font-size:2.2rem; color:#4facfe; margin-bottom:15px; }
+.feature-card h3 { font-size:1.2rem; margin-bottom:10px; color:#333; }
+.feature-card p { font-size:0.9rem; color:#555; }
+
+/* Footer */
+footer {
+  flex:0.2;
+  display:flex; align-items:center; justify-content:center;
+  background:#fff; text-align:center; padding:10px 20px; box-shadow:0 -2px 8px rgba(0,0,0,0.08);
+}
+footer p { color:#555; font-size:0.9rem; }
+
+@media(max-width:768px){
+  .features { flex-direction:column; align-items:center; gap:15px; }
+  .hero h1 { font-size:2.2rem; }
+  .hero p { font-size:1rem; }
+  .features-section h2 { font-size:1.6rem; margin-bottom:15px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Navbar -->
+  <nav>
+  <div class="logo">⚡ EV Spot System</div>
+  <div class="nav-buttons">
+    <a href="admin-login.php" class="login" style="background:#ff6b6b; margin-left:10px;">Admin</a>
+    <a href="login.html" class="login">User Login</a>
+    
+    <a href="registration.html" class="register">User Register</a>
+  </div>
+</nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <h1>Fast & Reliable EV Charging</h1>
+    <p>Locate charging stations, reserve your slot, and charge your EV efficiently anytime.</p>
+    <div class="hero-buttons">
+      <a href="registration.html">Register</a>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="features-section">
+    <h2>How It Works</h2>
+    <div class="features">
+      <div class="feature-card">
+        <i class="fas fa-map-marker-alt"></i>
+        <h3>Find Stations</h3>
+        <p>Locate nearby EV charging stations instantly.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-calendar-check"></i>
+        <h3>Book a Slot</h3>
+        <p>Reserve your charging slot in advance quickly.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-bolt"></i>
+        <h3>Charge Your EV</h3>
+        <p>Charge your vehicle safely and efficiently.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 EV Spot System. All rights reserved.</p>
+  </footer>
+</div>
+
+</body>
+</html>

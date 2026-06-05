@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Success - EV Spot System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #0d6efd, #3b82f6, #60a5fa);
+      color: #333;
+    }
+
+    .success-container {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Circle Animation */
+    .checkmark-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #28a745;
+      margin: 0 auto 20px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pop 0.6s ease-out forwards;
+    }
+
+    .checkmark {
+      width: 50px;
+      height: 25px;
+      border-left: 6px solid #fff;
+      border-bottom: 6px solid #fff;
+      transform: rotate(-45deg);
+      opacity: 0;
+      animation: draw 0.5s ease-in-out 0.6s forwards;
+    }
+
+    h1 {
+      color: #28a745;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 15px;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .details {
+      text-align: left;
+      font-size: 14px;
+      background: #f9fafc;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 20px;
+    }
+
+    .details strong {
+      color: #0d6efd;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0d6efd, #3b82f6);
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #084298, #1e40af);
+    }
+
+    /* Animations */
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes draw {
+      0% { opacity: 0; transform: scale(0.8) rotate(-45deg); }
+      100% { opacity: 1; transform: scale(1) rotate(-45deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media(max-width: 480px){
+      h1 { font-size: 22px; }
+      p, .details { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="success-container">
+    <div class="checkmark-circle">
+      <div class="checkmark"></div>
+    </div>
+    <h1>Booking Confirmed!</h1>
+    <p>Your EV charging spot has been successfully reserved 🎉</p>
+
+    <!-- Booking Summary -->
+    
+
+    <a href="user-dashboard.html" class="btn">Go to Dashboard</a>
+  </div>
+
+</body>
+</html>

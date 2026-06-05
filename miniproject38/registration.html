@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EV Spot Registration</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1e3c72, #2a5298, #1e3c72); /* Blue gradient */
+      color: #fff;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(15px);
+      padding: 40px 35px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+      width: 90%;
+      max-width: 450px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      background: linear-gradient(45deg, #00f5ff, #ff007c, #ff9900);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      text-align: left;
+    }
+
+    label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #e0e0e0;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    select option {
+      color: #000; /* Options inside dropdown remain visible */
+    }
+
+    select:focus {
+      background: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 12px #4facfe;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: hwb(0 95% 3% / 0.929);
+      transition: all 0.3s ease;
+    }
+
+    /* Default placeholder color */
+    input::placeholder {
+      color: inherit;
+      opacity: 0.7;
+    }
+
+    input:focus {
+      background: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 12px #4facfe;
+    }
+
+    .btn {
+      margin-top: 15px;
+      padding: 14px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: #000;
+      box-shadow: 0 5px 20px rgba(0, 242, 254, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 30px rgba(79, 172, 254, 0.6);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔋 EV Spot Registration</h1>
+    <form action="register.php" method="POST">
+      <label for="fname">Full Name</label>
+      <input type="text" id="fname" name="fname" placeholder="Enter your full name" required>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+      <label for="phno">Phone Number</label>
+      <input type="tel" id="phone" name="phno" placeholder="Enter your phone number" required>
+
+<label for="vehicle">Vehicle Type</label>
+      <input type="text" id="vehicle" name="vehicle" placeholder="Enter ev type(bike/scooter)" required>
+
+      <label for="address">Address</label>
+      <input type="text" id="address" name="addr" placeholder="Enter your address" required>
+
+      <label for="pwd">Password</label>
+      <input type="password" id="pwd" name="pwd" placeholder="Create a password" required>
+
+      <a href="login.html"></a><button type="submit" class="btn">Register Now</button>
+    </form>
+  </div>
+</body>
+</html>

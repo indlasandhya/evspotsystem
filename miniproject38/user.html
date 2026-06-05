@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>User Dashboard - EV Spot System</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<style>
+  /* Reset */
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+  body {
+    background: #f0f4f8;
+    min-height: 100vh;
+    display: flex;
+    color: #333;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 280px;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 25px;
+    border-radius: 0 30px 30px 0;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+  }
+  .sidebar .logo { font-size: 1.8rem; font-weight: 700; margin-bottom: 40px; text-align: center; letter-spacing: 1px; }
+  .sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 14px 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  .sidebar nav a i { font-size: 20px; }
+  .sidebar nav a:hover { background-color: rgba(255,255,255,0.2); transform: translateX(8px); }
+
+  /* Main content */
+  .main-content {
+    flex-grow: 1;
+    padding: 40px 50px;
+    overflow-y: auto;
+  }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+  .header h1 { font-size: 2.5rem; font-weight: 700; color: #007acc; }
+  .header .profile-info { text-align: right; }
+  .header .profile-info span { display: block; font-weight: 600; font-size: 1.1rem; color: #444; }
+  .header .profile-info small { font-weight: 400; color: #777; }
+
+  /* Cards grid */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 30px; }
+  .card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 123, 255, 0.12);
+    padding: 30px 25px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    color: #007acc;
+  }
+  .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 123, 255, 0.25); }
+  .card i { font-size: 50px; margin-bottom: 18px; color: #00b4ff; }
+  .card h2 { font-size: 22px; margin-bottom: 10px; font-weight: 700; }
+  .card p { font-size: 16px; color: #555; line-height: 1.4; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    body { flex-direction: column; }
+    .sidebar {
+      width: 100%;
+      border-radius: 0 0 30px 30px;
+      flex-direction: row;
+      justify-content: space-around;
+      padding: 15px 10px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 999;
+    }
+    .sidebar nav a { margin-bottom: 0; padding: 10px 8px; font-size: 14px; }
+    .sidebar .logo { display: none; }
+    .main-content { padding: 20px 15px 80px; margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="logo">EV Spot</div>
+  <nav>
+    <a href="user.html"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+    <a href="userbooking.php"><i class="fas fa-calendar-check"></i>Bookings History</a>
+    <a href="userwaitlist.php"><i class="fas fa-calendar-check"></i>Waitlist History</a>
+    
+    <a href="main.html"><i class="fas fa-home"></i>Home</a> <!-- <-- Home button -->
+    <a href="logout.html"><i class="fas fa-sign-out-alt"></i>Logout</a>
+  </nav>
+</aside>
+
+
+<!-- Main content -->
+<main class="main-content">
+  <header class="header">
+    <h1>Welcome, <span id="userEmail">user@example.com</span>!</h1>
+    <div class="profile-info">
+      <span id="userEmailProfile">user@example.com</span>
+      <small>Logged in</small>
+    </div>
+  </header>
+
+  <section class="cards">
+    <div class="card" onclick="location.href='userbooking.php'">
+      <i class="fas fa-calendar-check"></i>
+      <h2>My Bookings</h2>
+      <p>Check your booking status and upcoming reservations.</p>
+    </div>
+
+    <div class="card" onclick="location.href='userbooking.php'">
+      <i class="fas fa-wallet"></i>
+      <h2>Payment History</h2>
+      <p>Review your past payments and transaction details.</p>
+    </div>
+
+    <div class="card" onclick="location.href='userwaitlist.php'">
+      <i class="fas fa-user-cog"></i>
+     <h2>My Waitlist</h2>
+      <p>Check your waitlist status and upcoming reservations.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+// Get email from localStorage
+const email = localStorage.getItem("userEmail");
+
+// Redirect to login if email not found
+if(!email) window.location.href = "login.html";
+
+// Display email in header and profile info
+document.getElementById("userEmail").textContent = email;
+document.getElementById("userEmailProfile").textContent = email;
+
+// Logout function
+function logout() {
+  localStorage.removeItem("userEmail");
+}
+</script>
+
+</body>
+</html>

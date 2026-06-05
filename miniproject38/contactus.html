@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us - EV Spot System</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: #222;
+    background: #f8faff;
+  }
+
+  /* Navbar / Header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8%;
+    background: #203859;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .logo { font-size: 2rem; font-weight: bold; letter-spacing: 1px; }
+  nav { display: flex; align-items: center; flex-wrap: wrap; position: relative; }
+  nav a {
+    color: #fff;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    font-size: 1.1rem;
+  }
+  nav a:hover { color: #49e86f; }
+
+  /* User Email Badge - reduced size */
+  .user-email {
+    margin-left: 20px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 1rem;
+    background: #49e86f;
+    padding: 6px 14px;
+    border-radius: 25px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .menu-bar { position: relative; margin-left: 20px; cursor: pointer; }
+  .menu-bar span {
+    display: block;
+    height: 3px;
+    width: 22px;
+    background: #fff;
+    margin: 4px 0;
+    border-radius: 5px;
+  }
+  .dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 35px;
+    background: #203859;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    min-width: 180px;
+    z-index: 30;
+  }
+  .dropdown a {
+    display: block;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 1rem;
+  }
+  .dropdown a:hover { background: #49e86f; color: #203859; }
+
+  .menu-toggle { display: none; flex-direction: column; cursor: pointer; }
+  .menu-toggle span { height: 3px; width: 25px; background: #fff; margin: 4px 0; border-radius: 5px; }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -260px;
+    width: 260px;
+    height: 100%;
+    background: #203859;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    padding-top: 70px;
+    transition: right 0.3s ease;
+    z-index: 25;
+  }
+  .sidebar a {
+    padding: 15px 20px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .sidebar a:hover { background: #49e86f; color: #203859; }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 15;
+  }
+
+  /* Contact Section */
+  .contact-section {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  .contact-section h2 {
+    font-size: 2.5em;
+    color: #0077cc;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .contact-section p {
+    font-size: 1.1em;
+    text-align: center;
+    color: #555;
+    margin-bottom: 30px;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: #0077cc;
+    outline: none;
+  }
+
+  .contact-form button {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background: #0077cc;
+    color: #fff;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .contact-form button:hover {
+    background: #005fa3;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 600px) {
+    .contact-section { margin: 20px; padding: 30px 20px; }
+  }
+
+  @media (max-width: 768px) {
+    nav { display: none; }
+    .menu-toggle { display: flex; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⚡ EV Spot System</div>
+  <nav>
+    <a href="main.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About Us</a>
+    <a href="contactus.html">Contact Us</a>
+
+    <span class="user-email" id="user-email"></span>
+
+    <div class="menu-bar" onclick="toggleDropdown()">
+      <span></span>
+      <span></span>
+      <span></span>
+      <div class="dropdown" id="dropdown">
+       <a href="user.html">👤 User</a>
+         <a href="logout.html" onclick="logout()">🚪 Logout</a
+      </div>
+    </div>
+  </nav>
+  <div class="menu-toggle" onclick="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</header>
+
+<div class="sidebar" id="sidebar">
+  <a href="main.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="about.html">About Us</a>
+  <a href="contactus.html">Contact Us</a>
+  <a href="user.html">👤 User</a>
+  <a href="logout.html" onclick="logout()">🚪 Logout</a>
+</div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- Contact Form -->
+<section class="contact-section">
+    <h2>Contact Us</h2>
+    <p>Have questions or need support? Fill out the form below and we'll get back to you promptly.</p>
+
+    <form class="contact-form" action="contact.php" method="POST">
+  <input type="text" name="name" placeholder="Your Name" required>
+  <input type="email" name="email" placeholder="Your Email" required>
+  <input type="tel" name="phone" placeholder="Your Phone">
+  <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+  <button type="submit">Send Message</button>
+</form>
+
+</section>
+
+<script>
+
+  function redirectToSuccess(e) {
+  e.preventDefault(); // Prevent actual form submission
+  window.location.href = "contactsuccess.html"; // Redirect to success page
+  return false;
+}
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  if (sidebar.style.right === "0px") {
+    sidebar.style.right = "-260px";
+    overlay.style.display = "none";
+  } else {
+    sidebar.style.right = "0px";
+    overlay.style.display = "block";
+  }
+}
+function toggleDropdown() {
+  const dropdown = document.getElementById("dropdown");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+window.addEventListener("click", function(e) {
+  const menuBar = document.querySelector(".menu-bar");
+  const dropdown = document.getElementById("dropdown");
+  if (!menuBar.contains(e.target)) { dropdown.style.display = "none"; }
+});
+
+// Display logged-in email badge
+document.addEventListener("DOMContentLoaded", () => {
+  const email = localStorage.getItem("userEmail");
+  document.getElementById("user-email").innerHTML = email ? `👤 Welcome ${email}` : `👤 Welcome Guest`;
+});
+</script>
+
+</body>
+</html>

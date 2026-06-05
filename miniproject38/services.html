@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EV Spot System - Services</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: #222;
+    background: #f8faff;
+  }
+
+  /* Navbar */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8%;
+    background: #203859;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .logo { font-size: 2rem; font-weight: bold; letter-spacing: 1px; }
+  nav { display: flex; align-items: center; flex-wrap: wrap; position: relative; }
+  nav a {
+    color: #fff;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    font-size: 1.1rem;
+  }
+  nav a:hover { color: #49e86f; }
+
+  /* User Email Badge - reduced size */
+  .user-email {
+    margin-left: 20px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 1rem;
+    background: #49e86f;
+    padding: 6px 14px;
+    border-radius: 25px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Dropdown & menu bar */
+  .menu-bar { position: relative; margin-left: 20px; cursor: pointer; }
+  .menu-bar span { display: block; height: 3px; width: 22px; background: #fff; margin: 4px 0; border-radius: 5px; }
+  .dropdown { display: none; position: absolute; right: 0; top: 35px; background: #203859; box-shadow: 0 3px 8px rgba(0,0,0,0.3); border-radius: 6px; overflow: hidden; min-width: 180px; z-index: 30; }
+  .dropdown a { display: block; padding: 12px 15px; text-decoration: none; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 1rem; }
+  .dropdown a:hover { background: #49e86f; color: #203859; }
+
+  .menu-toggle { display: none; flex-direction: column; cursor: pointer; }
+  .menu-toggle span { height: 3px; width: 25px; background: #fff; margin: 4px 0; border-radius: 5px; }
+
+  /* Sidebar */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -260px;
+    width: 260px;
+    height: 100%;
+    background: #203859;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    padding-top: 70px;
+    transition: right 0.3s ease;
+    z-index: 25;
+  }
+  .sidebar a { padding: 15px 20px; color: #fff; text-decoration: none; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .sidebar a:hover { background: #49e86f; color: #203859; }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 15;
+  }
+
+  /* Services Section */
+  .services {
+    padding: 60px 5%;
+    text-align: center;
+    background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+  }
+  .services h1 {
+    font-size: 2.5rem;
+    color: #0d47a1;
+    margin-bottom: 10px;
+  }
+  .services p { font-size: 1.1rem; color: #333; margin-bottom: 40px; }
+
+  .service-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  .service-container::-webkit-scrollbar { height: 8px; }
+  .service-container::-webkit-scrollbar-thumb { background-color: #0d47a1; border-radius: 4px; }
+  .service-card {
+    flex: 0 0 220px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+  }
+  .service-card .icon {
+    font-size: 2.5rem;
+    background: #0d47a1;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    margin: 0 auto 15px auto;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .service-card h3 { font-size: 1.2rem; color: #0d47a1; margin-bottom: 10px; }
+  .service-card p { font-size: 0.95rem; color: #555; line-height: 1.4; }
+
+  @media (max-width: 768px) {
+    nav { display: none; }
+    .menu-toggle { display: flex; }
+    .service-card { flex: 0 0 180px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⚡ EV Spot System</div>
+
+  <nav>
+   <a href="main.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About Us</a>
+    <a href="contactus.html">Contact Us</a>
+
+    <span class="user-email" id="user-email"></span>
+
+<div class="menu-bar" onclick="toggleDropdown()">
+      <span></span><span></span><span></span>
+      <div class="dropdown" id="dropdown">
+         <a href="user.html">👤 User</a>
+         <a href="logout.html" onclick="logout()">🚪 Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="menu-toggle" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+</header>
+
+<div class="sidebar" id="sidebar">
+  <a href="main.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="about.html">About Us</a>
+  <a href="contactus.html">Contact Us</a>
+  <a href="user.html">👤 User</a>
+  <a href="logout.html" onclick="logout()">🚪 Logout</a>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- Services Section -->
+<section class="services">
+  <h1>Our Services</h1>
+  <p>Explore our app-inspired services that make EV charging fast, convenient, and reliable.</p>
+
+  <div class="service-container">
+    <div class="service-card">
+      <div class="icon">🔍</div>
+      <h3>Find Charging Slots</h3>
+      <p>Check availability and reserve nearby EV charging slots instantly.</p>
+    </div>
+    <div class="service-card">
+      <div class="icon">📍</div>
+      <h3>Nearest Stations</h3>
+      <p>Locate the closest EV stations and plan your route efficiently.</p>
+    </div>
+    <div class="service-card">
+      <div class="icon">⚡</div>
+      <h3>Fast Charging</h3>
+      <p>Use ultra-fast chargers to power your EV quickly and safely.</p>
+    </div>
+    <div class="service-card">
+      <div class="icon">💳</div>
+      <h3>Easy Payment</h3>
+      <p>Pay securely using cards, wallets, or UPI directly through the app.</p>
+    </div>
+    <div class="service-card">
+      <div class="icon">🕐</div>
+      <h3>24/7 Support</h3>
+      <p>Our team is available anytime to help with any queries or issues.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  if (sidebar.style.right === "0px") { sidebar.style.right = "-260px"; overlay.style.display = "none"; }
+  else { sidebar.style.right = "0px"; overlay.style.display = "block"; }
+}
+
+function toggleDropdown() {
+  const dropdown = document.getElementById("dropdown");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
+window.addEventListener("click", function(e) {
+  const menuBar = document.querySelector(".menu-bar");
+  const dropdown = document.getElementById("dropdown");
+  if (!menuBar.contains(e.target)) { dropdown.style.display = "none"; }
+});
+
+// Show logged-in email like about.html
+document.addEventListener("DOMContentLoaded", () => {
+  const email = localStorage.getItem("userEmail");
+  document.getElementById("user-email").innerHTML = email ? `👤 Welcome ${email}` : `👤 Welcome Guest`;
+});
+</script>
+
+</body>
+</html>
